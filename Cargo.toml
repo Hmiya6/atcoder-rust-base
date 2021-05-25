@@ -113,4 +113,4 @@ proconio = { version = "=0.3.6", features = ["derive"] }
 # ---------------------------------------------------------------------
 
 [dev-dependencies]
-cli_test_dir = "0.1"
+# cli_test_dir = "0.1"
