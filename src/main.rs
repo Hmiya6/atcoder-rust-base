@@ -25,8 +25,19 @@ fn main() {
 #[cfg(test)]
 mod test {
     use super::*;
+    use proconio::source::auto::AutoSource;
+
     #[test]
     fn test_() {
-        assert_eq!(0, 0);
+        testcase("");
+    }
+
+    fn testcase(input: &str, ) {
+        let source = AutoSource::from(input);
+        input! {
+            from: source,
+        }
+        let ans = solve();
+        assert_eq!(ans, );
     }
 }
