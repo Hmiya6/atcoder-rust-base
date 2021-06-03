@@ -35,7 +35,7 @@ mod test {
     fn testcase(input: &str, ) {
         let source = AutoSource::from(input);
         input! {
-            from: source,
+            from source,
         }
         let ans = solve();
         assert_eq!(ans, );
