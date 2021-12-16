@@ -30,6 +30,48 @@ fn read_vec<T>() -> Vec<T> where T: FromStr {
         .collect::<Vec<T>>()
 }
 
+#[derive(Debug)]
+enum ToUsizeError {
+    NonDigitChar(char),
+}
+
+use std::fmt;
+impl fmt::Display for ToUsizeError {
+    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
+        match self {
+            ToUsizeError::NonDigitChar(c) => {
+                write!(f, "Not a digit char: {}", c)
+            },
+        }
+    }
+}
+
+trait ToUsize {
+    fn to_usize(&self) -> Result<usize, ToUsizeError>;
+}
+
+impl ToUsize for str {
+    fn to_usize(&self) -> Result<usize, ToUsizeError> {
+        let mut result = 0usize;
+        let chars = self.chars();
+        for item in chars {
+            match item {
+                '0'..='9' => {
+                    let n = match item.to_digit(10) {
+                        Some(digit) => { digit as usize },
+                        None => { return Err(ToUsizeError::NonDigitChar(item)) },
+                    };
+                    result = result*10 + n;
+                }
+                _ => {
+                    return Err(ToUsizeError::NonDigitChar(item));
+                }
+            }
+        }
+        Ok(result)
+    }
+}
+
 use proconio::input;
 
 fn main() {
