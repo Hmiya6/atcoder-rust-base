@@ -44,7 +44,7 @@ mod int_utils {
     #[derive(Debug, PartialEq)]
     pub enum ToUintError<'a> {
         NonDigitChar(char),
-        OutOfUsize(&'a str),
+        OutOfSize(&'a str),
     }
 
     use std::fmt;
@@ -54,7 +54,7 @@ mod int_utils {
                 Self::NonDigitChar(c) => {
                     write!(f, "Not a digit char: {}", c)
                 },
-                Self::OutOfUsize(s) => {
+                Self::OutOfSize(s) => {
                     write!(f, "Out of usize range: {}", s)
                 }
             }
@@ -68,7 +68,7 @@ mod int_utils {
                 Self::NonDigitChar(_c) => {
                     "Not a digit char"
                 }
-                Self::OutOfUsize(_s) => {
+                Self::OutOfSize(_s) => {
                     "Out of usize range"
                 }
             }
@@ -87,7 +87,7 @@ mod int_utils {
                 fn $method_name(&self) -> Result<$type, ToUintError> {
                     use ToUintError::{
                         NonDigitChar,
-                        OutOfUsize,
+                        OutOfSize,
                     };
                     let mut result: $type = 0;
                     let chars = self.as_ref().chars();
@@ -101,9 +101,9 @@ mod int_utils {
                                 
                                 result = result
                                         .checked_mul(10)
-                                        .ok_or(OutOfUsize(self.as_ref()))?
+                                        .ok_or(OutOfSize(self.as_ref()))?
                                         .checked_add(n)
-                                        .ok_or(OutOfUsize(self.as_ref()))?;
+                                        .ok_or(OutOfSize(self.as_ref()))?;
                             }
                             _ => {
                                 return Err(NonDigitChar(item));
@@ -153,7 +153,7 @@ mod int_utils {
         #[test]
         fn out_of_usize_error() {
             assert_eq!(
-                ToUintError::OutOfUsize("999999999999999999999999999999999"), 
+                ToUintError::OutOfSize("999999999999999999999999999999999"), 
                 "999999999999999999999999999999999".to_usize().err().unwrap()
             );
         }
