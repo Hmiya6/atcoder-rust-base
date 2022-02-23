@@ -25,17 +25,33 @@ mod input {
     }
 
     #[allow(dead_code)]
+    pub fn read_val<T>() -> T where T: FromStr {
+        let line = read_line();
+        let line = line.trim();
+        T::from_str(line).ok().unwrap()
+    }
+
+    #[allow(dead_code)]
     pub fn read_vec<T>() -> Vec<T> where T: FromStr {
         let line = read_line();
         line.split_whitespace()
             .map(|item| T::from_str(item).ok().unwrap())
             .collect::<Vec<T>>()
     }
+
+    #[allow(dead_code)]
+    pub fn read_mat<T>(line: usize) -> Vec<Vec<T>> where T: FromStr {
+        let mut ret: Vec<Vec<T>> = Vec::new();
+        for _ in 0..line {
+            ret.push(read_vec());
+        }
+        ret
+    }
 }
 
 // main
 fn main() {
-    let _n = input::read_vec::<usize>();
+    let _n = input::read_val::<usize>();
 
 }
 
