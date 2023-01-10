@@ -49,6 +49,35 @@ mod input {
     }
 }
 
+mod output {
+    // https://stackoverflow.com/a/30325430
+
+    use std::fmt;
+
+    pub(super) struct OutputVec<'a, T> {
+        slice: &'a [T],
+        separator: &'a str,
+    }
+
+    impl<'a, T> OutputVec<'a, T> {
+        pub fn new(slice: &'a [T], separator: &'a str) -> Self {
+            Self { slice, separator }
+        }
+    }
+
+    impl<'a, T> fmt::Display for OutputVec<'a, T> where T: fmt::Display {
+        fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
+            let mut buf = String::new();
+            for item in &self.slice[0..self.slice.len()-1] {
+                buf.push_str(&format!("{}" , item));
+                buf.push_str(self.separator);
+            }
+            buf.push_str(&format!("{}", self.slice[self.slice.len()-1]));
+            write!(f, "{}", buf)
+        }
+    }
+}
+
 // main
 fn main() {
     let _n = input::read_val::<usize>();
